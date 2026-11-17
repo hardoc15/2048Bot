@@ -1,0 +1,22 @@
+# Internal planning notes (not for the public repo)
+PROJECT_PLAN.md
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+
+# LaTeX build artifacts
+*.aux
+*.log
+*.out
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
