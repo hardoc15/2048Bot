@@ -71,33 +71,88 @@ Minimax and Expectimax are first compared at the same search depth. Depth is the
 
 ## Repository Structure
 
-Planned layout (it may change during implementation):
-
 ```text
 2048Bot/
 ├── README.md
-├── requirements.txt      # Python dependencies
-├── game/                 # 2048 rules and board mechanics
-├── agents/               # Random, Greedy, Minimax, Expectimax
-├── experiments/          # Evaluation scripts and generated results/figures
-├── slides/               # Presentation slides and demo
-└── paper/                # LaTeX source and compiled PDF
+├── requirements.txt      # Python dependencies (none yet; standard library only)
+├── game/                 # 2048 engine (on main)
+│   ├── board.py          #   Pure board functions: moves, merges, spawns, game over
+│   ├── game.py           #   Game class: board + score + seeded random spawns
+│   ├── runner.py         #   play_game / play_games: run an agent and record results
+│   └── __main__.py       #   Play 2048 yourself in the terminal
+├── agents/
+│   └── base.py           # Agent interface every algorithm implements
+├── tests/                # Unit tests for the engine
+├── experiments/          # (planned) Evaluation scripts and results/figures
+├── slides/               # (planned) Presentation slides and demo
+└── paper/                # (planned) LaTeX source and compiled PDF
 ```
+
+### Branches
+
+`main` holds the shared 2048 engine. Each agent is developed on its own branch (one per algorithm: Random, Greedy, Minimax, Expectimax) and merged back for the final experiments.
 
 ## Getting Started
 
-**Requirements:** Python 3
+**Requirements:** Python 3.8+ (no third-party packages)
 
 ```bash
 git clone https://github.com/hardoc15/2048Bot.git
 cd 2048Bot
-pip install -r requirements.txt
 ```
 
-Commands for running individual agents and reproducing the experiments will be added once the code is in place, along with:
+**Play 2048 yourself** (w/a/s/d, then Enter; q quits):
 
-- Random seeds and search-depth settings used
-- Where generated results and figures are written
+```bash
+python3 -m game
+python3 -m game --seed 42   # same tile spawns every time
+```
+
+**Run the tests:**
+
+```bash
+python3 -m unittest discover -s tests
+```
+
+## Writing an Agent
+
+Every agent subclasses `Agent` and implements `choose_move(board)`, which returns a legal `Direction`:
+
+```python
+from agents.base import Agent
+from game import Direction, legal_moves
+
+class MyAgent(Agent):
+    name = "my-agent"
+
+    def choose_move(self, board):
+        return legal_moves(board)[0]
+```
+
+Run it through full games:
+
+```python
+from game import play_game, play_games
+
+result = play_game(MyAgent(), seed=0)
+print(result.score, result.max_tile, result.reached_2048, result.time_per_move)
+
+results = play_games(MyAgent(), seeds=range(100))  # same seeds for every agent
+```
+
+### Engine API for search
+
+A board is an immutable tuple of rows (`0` = empty). Every function returns a new board, so agents can explore hypothetical moves safely.
+
+| Function | Returns | Useful for |
+| --- | --- | --- |
+| `legal_moves(board)` | Directions that change the board | All agents |
+| `apply_move(board, direction)` | `(new_board, score_gained, changed)`, with **no** tile spawn | Greedy (evaluating each move), search |
+| `spawn_outcomes(board)` | `[(probability, board), ...]` for every possible spawn | Expectimax (weighted), Minimax (worst case) |
+| `empty_cells(board)` | `[(row, col), ...]` | Heuristics |
+| `max_tile(board)` / `is_game_over(board)` | Largest tile / no legal moves | Heuristics, terminal checks |
+
+Commands for reproducing the experiments, including the seeds and search depths used, will be added once the agents are complete.
 
 ## Paper and Presentation
 
