@@ -154,13 +154,6 @@ A board is an immutable tuple of rows (`0` = empty). Every function returns a ne
 
 Commands for reproducing the experiments, including the seeds and search depths used, will be added once the agents are complete.
 
-### Reproduce the random baseline figure
-
-From the repository root, run `python -m experiments.random_baseline`.
-This plays 100 games with game seeds 0–99 and a separate agent RNG seeded
-with 0 at the start of the batch. It regenerates the
-[score and highest-tile distributions](slides/random-baseline.svg).
-
 ## Paper and Presentation
 
 - **Paper:** `paper/` (LaTeX source and compiled PDF, in an AI conference style)
