@@ -34,7 +34,20 @@ The board heuristic combines several features:
 - **Smoothness:** reward neighboring tiles with similar values.
 - **Corner placement:** reward keeping the largest tile in a corner.
 
-The final weights and exact definitions will be documented here and in the paper.
+The heuristic is implemented in [`agents/heuristic.py`](agents/heuristic.py). Tile values are compared on a log2 scale (2 → 1, 2048 → 11). The board score is a weighted sum:
+
+| Feature | Definition | Weight |
+| --- | --- | ---: |
+| Empty cells | Number of empty cells | 1.0 |
+| Monotonicity | Minus, for each row and column, the smaller of its "breaks increasing" and "breaks decreasing" totals | 1.0 |
+| Smoothness | Minus the sum of log2 differences between adjacent non-empty tiles | 0.5 |
+| Corner | log2 of the largest tile if it sits in a corner, else 0 | 3.0 |
+
+The weights come from a grid search with the Greedy agent (81 combinations, 60 games each on seeds 1000–1059) and were then checked on 100 held-out games (seeds 5000–5099). Smoothness had the largest effect. The other agents can import `evaluate` and `HeuristicWeights` directly.
+
+### Greedy Agent
+
+[`agents/greedy.py`](agents/greedy.py) simulates each legal move with `apply_move` (before any new tile appears), scores each resulting board with the shared heuristic, and plays the highest-scoring one. It has no lookahead. Ties go to the first move in the order up, down, left, right, so the agent is deterministic.
 
 ### Modeling Randomness
 
@@ -67,7 +80,34 @@ Minimax and Expectimax are first compared at the same search depth. Depth is the
 
 ## Results
 
-*Results will appear here after the experiments are complete.* This section will include summary tables, score and tile distributions, and runtime comparisons.
+*Preliminary: only the Greedy agent is done so far.* Full comparison tables will be added once all four agents are finished.
+
+**Greedy, 100 games (seeds 0–99):**
+
+| Metric | Value |
+| --- | ---: |
+| Average score | 11,930 |
+| Median score | 11,812 |
+| 2048 success rate | 12% |
+| Reached 1024 or higher | 53% |
+| Average time per move | ~0.08 ms |
+
+Reproduce with:
+
+```bash
+python3 -m experiments.evaluate --agent greedy --games 100 --csv experiments/results/greedy.csv
+```
+
+Timing depends on the machine; scores are deterministic for a given seed.
+
+### Results notebook and figures
+
+[`experiments/results.ipynb`](experiments/results.ipynb) runs the Greedy agent on 100 seeded games and produces its tables and figures for the slides and paper (saved to `experiments/figures/`): a summary table, tile-reach curve, score distribution, highest-tile distribution, heuristic ablation, weight-sensitivity heatmap, and a single-game demo.
+
+```bash
+pip install -r requirements.txt
+jupyter notebook experiments/results.ipynb   # then Kernel → Restart & Run All
+```
 
 ## Repository Structure
 
@@ -81,9 +121,13 @@ Minimax and Expectimax are first compared at the same search depth. Depth is the
 │   ├── runner.py         #   play_game / play_games: run an agent and record results
 │   └── __main__.py       #   Play 2048 yourself in the terminal
 ├── agents/
-│   └── base.py           # Agent interface every algorithm implements
-├── tests/                # Unit tests for the engine
-├── experiments/          # (planned) Evaluation scripts and results/figures
+│   ├── base.py           # Agent interface every algorithm implements
+│   ├── heuristic.py      # Shared board evaluation (Greedy, Minimax, Expectimax)
+│   └── greedy.py         # Greedy agent
+├── tests/                # Unit tests for the engine and agents
+├── experiments/
+│   ├── evaluate.py       # Run N seeded games for an agent and report metrics
+│   └── results/          # Per-game CSV output
 ├── slides/               # (planned) Presentation slides and demo
 └── paper/                # (planned) LaTeX source and compiled PDF
 ```
