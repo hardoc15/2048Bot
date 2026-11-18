@@ -58,6 +58,18 @@ After every valid move in standard 2048, a new tile appears in a uniformly rando
 
 This is a deliberate modeling comparison. 2048 has no real opponent; the question is whether pessimistic or probability-aware planning works better.
 
+### What If the Tiles Fight Back? (Villain and Helper Spawners)
+
+To test those modeling assumptions directly, we replace 2048's random tile placement with an AI **spawner** ([`spawners/`](spawners/)) that chooses where every new tile goes:
+
+- **Villain:** places each tile where it does the most damage to the player.
+- **Helper:** places each tile where it helps the player most.
+- **Random:** the standard rule. It reproduces a normal seeded game exactly.
+
+The villain and helper use adversarial search over the alternating spawner/player game tree. They look `depth` player turns ahead, model the player as greedy, and score positions with the shared heuristic. A spawn that leaves the player with no legal move ends the game, so the villain always takes one when it can. The villain and helper may choose a 2 or a 4 freely, unlike the normal 90/10 rule.
+
+This turns Minimax's assumption (an adversarial spawn) and Expectimax's assumption (a random spawn) into real opponents, so each agent can be measured under both.
+
 ## Experiments
 
 Each agent plays **at least 100 games** under identical rules with comparable random seeds.
@@ -100,9 +112,41 @@ python3 -m experiments.evaluate --agent greedy --games 100 --csv experiments/res
 
 Timing depends on the machine; scores are deterministic for a given seed.
 
+### Greedy vs. villain, random, and helper spawners
+
+Same agent, same 100 starting positions (seeds 0–99); only the tile placement changes:
+
+| Spawner | Average score | Highest tile | Distinct games | Time per spawn |
+| --- | ---: | --- | ---: | ---: |
+| Villain, depth 2 | 356 | 64 at most | 10 | ~7 ms |
+| Villain, depth 1 | 765 | 128 at most | 12 | ~0.5 ms |
+| Random (normal game) | 11,930 | 2048 in 12% | 99 | — |
+| Helper, depth 1 | 11,780 | always 1024 | 2 | ~0.6 ms |
+| Helper, depth 2 | 33,484 | 2048 every game | 2 | ~7 ms |
+
+Findings so far:
+
+- **Tile placement matters enormously.** With the agent unchanged, the average score ranges about 90-fold, from 356 to 33,484.
+- **Sabotage is easy; help takes planning.** Even a one-move-deep villain wrecks the game. A one-move-deep helper doesn't help at all: it mostly hands out 4s that look good right now and jams the board at 1024. Looking two moves ahead, the helper reaches 2048 every time.
+- **The spawner removes the luck.** After the two starting tiles, a villain or helper game has no randomness, and different starts quickly converge to the same few games (see "Distinct games"). That column, not 100, is the effective sample size for those rows.
+- **Caveat:** the villain and helper model the player with the same heuristic Greedy uses, so against Greedy they know their opponent exactly.
+
+Reproduce (about 15 minutes, mostly the depth-2 helper games):
+
+```bash
+python3 -m experiments.spawner_experiment --games 100 --depths 1 2
+```
+
+Play against the villain or helper yourself (w/a/s/d, then Enter):
+
+```bash
+python3 -m spawners --spawner villain
+python3 -m spawners --spawner helper
+```
+
 ### Results notebook and figures
 
-[`experiments/results.ipynb`](experiments/results.ipynb) runs the Greedy agent on 100 seeded games and produces its tables and figures for the slides and paper (saved to `experiments/figures/`): a summary table, tile-reach curve, score distribution, highest-tile distribution, heuristic ablation, weight-sensitivity heatmap, and a single-game demo.
+[`experiments/results.ipynb`](experiments/results.ipynb) runs the Greedy agent on 100 seeded games and produces its tables and figures for the slides and paper (saved to `experiments/figures/`): a summary table, tile-reach curve, score distribution, highest-tile distribution, heuristic ablation, weight-sensitivity heatmap, and a single-game demo, plus the spawner results (scores by spawner, tile reach by spawner, and the same start played out against the villain, random, and helper).
 
 ```bash
 pip install -r requirements.txt
@@ -114,7 +158,7 @@ jupyter notebook experiments/results.ipynb   # then Kernel → Restart & Run All
 ```text
 2048Bot/
 ├── README.md
-├── requirements.txt      # Python dependencies (none yet; standard library only)
+├── requirements.txt      # Notebook dependencies (the game and agents need none)
 ├── game/                 # 2048 engine (on main)
 │   ├── board.py          #   Pure board functions: moves, merges, spawns, game over
 │   ├── game.py           #   Game class: board + score + seeded random spawns
@@ -124,9 +168,17 @@ jupyter notebook experiments/results.ipynb   # then Kernel → Restart & Run All
 │   ├── base.py           # Agent interface every algorithm implements
 │   ├── heuristic.py      # Shared board evaluation (Greedy, Minimax, Expectimax)
 │   └── greedy.py         # Greedy agent
-├── tests/                # Unit tests for the engine and agents
+├── spawners/             # Who places the tiles: random, villain, or helper
+│   ├── base.py           #   Spawner interface + RandomSpawner (the normal game)
+│   ├── adversarial.py    #   VillainSpawner / HelperSpawner (adversarial search)
+│   ├── runner.py         #   play_game_with_spawner
+│   └── __main__.py       #   Play against the villain or helper yourself
+├── tests/                # Unit tests for the engine, agents, and spawners
 ├── experiments/
 │   ├── evaluate.py       # Run N seeded games for an agent and report metrics
+│   ├── spawner_experiment.py  # Greedy vs. villain / random / helper
+│   ├── results.ipynb     # All tables and figures
+│   ├── figures/          # PNGs for slides and paper
 │   └── results/          # Per-game CSV output
 ├── slides/               # (planned) Presentation slides and demo
 └── paper/                # (planned) LaTeX source and compiled PDF
