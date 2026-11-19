@@ -185,9 +185,9 @@ def agent_table():
     return SAMPLE, True
 
 
-def dumbbell_svg(table, width=1040, height=318) -> str:
+def dumbbell_svg(table, width=1040, height=290) -> str:
     """Log-scale dot plot: each agent's score against the villain, in the normal game, and (if run) with the helper."""
-    left, right, top, bottom = 245, 30, 14, 42
+    left, right, top, bottom = 205, 30, 18, 40
     vals = [v[k] for v in table.values() for k in ("random", "villain", "helper") if k in v]
     lo, hi = math.log10(min(vals) / 1.8), math.log10(max(vals) * 1.8)
     sx = lambda v: left + (math.log10(v) - lo) / (hi - lo) * (width - left - right)
@@ -204,8 +204,8 @@ def dumbbell_svg(table, width=1040, height=318) -> str:
         d = table[a]
         keys = [k for k in ("villain", "random", "helper") if k in d]
         xs = [sx(d[k]) for k in keys]
-        parts.append(f'<text x="{left - 18}" y="{y + 6:.1f}" fill="#241c16" font-size="19" font-weight="900" '
-                     f'text-anchor="end">{AGENT_NAME[a]}</text>')
+        parts.append(f'<text x="0" y="{y + 7:.1f}" fill="#241c16" font-size="20" font-weight="900" '
+                     f'text-anchor="start">{AGENT_NAME[a]}</text>')
         parts.append(f'<line x1="{min(xs):.1f}" x2="{max(xs):.1f}" y1="{y:.1f}" y2="{y:.1f}" stroke="#e7d8c3" '
                      f'stroke-width="9" stroke-linecap="round"/>')
         for k, x in zip(keys, xs):
@@ -231,7 +231,6 @@ def agents_numbers() -> dict:
     legend = "".join(f'<span><i style="background:{SPAWNER_COLOR[k]}"></i>{lab}</span>'
                      for k, lab in [("villain", "Against the villain"), ("random", "Normal game"), ("helper", "With the helper (20 games)")]
                      if k != "helper" or any("helper" in v for v in table.values()))
-    legend += '<span style="font-weight:700">(average score, log scale)</span>'
     agent_dot = {"random": "#6b5d52", "greedy": "#2a78d6", "minimax": "#eb6834", "expectimax": "#199e70", "td": "#6250d6"}
     rows = "\n".join(
         f'        <tr><td><span class="who"><i style="background:{agent_dot[a]}"></i>{AGENT_NAME[a]}'
