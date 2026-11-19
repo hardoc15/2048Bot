@@ -204,7 +204,7 @@ def dumbbell_svg(table, width=1040, height=290) -> str:
         d = table[a]
         keys = [k for k in ("villain", "random", "helper") if k in d]
         xs = [sx(d[k]) for k in keys]
-        parts.append(f'<text x="0" y="{y + 7:.1f}" fill="#241c16" font-size="20" font-weight="900" '
+        parts.append(f'<text x="0" y="{y + 7:.1f}" fill="#4a3a2f" font-size="20" font-weight="600" '
                      f'text-anchor="start">{AGENT_NAME[a]}</text>')
         parts.append(f'<line x1="{min(xs):.1f}" x2="{max(xs):.1f}" y1="{y:.1f}" y2="{y:.1f}" stroke="#e7d8c3" '
                      f'stroke-width="9" stroke-linecap="round"/>')
