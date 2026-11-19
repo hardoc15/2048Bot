@@ -307,6 +307,24 @@ A board is an immutable tuple of rows (`0` = empty). Every function returns a ne
 | `empty_cells(board)` | `[(row, col), ...]` | Heuristics |
 | `max_tile(board)` / `is_game_over(board)` | Largest tile / no legal moves | Heuristics, terminal checks |
 
+### Running Expectimax
+
+Expectimax uses the shared Greedy board heuristic. Depth counts player moves,
+including the random tile spawn after each move. At depth 2, the agent considers
+every possible tile spawn after its first move, picks the best continuation for
+each outcome, and evaluates the boards after the second move's spawn. It uses
+the engine's exact spawn probabilities and breaks ties in up, down, left, right
+order.
+
+```python
+from agents.expectimax import ExpectimaxAgent
+from game import play_games
+
+for result in play_games(ExpectimaxAgent(depth=2), seeds=[0, 1, 2]):
+    print(result.seed, result.score, result.max_tile, result.reached_2048,
+          result.moves, result.time_per_move)
+```
+
 Commands for reproducing the experiments, including the seeds and search depths used, will be added once the agents are complete.
 
 ## Presentation
