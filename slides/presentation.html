@@ -161,18 +161,22 @@
   .setup-slide .players { margin-top: 30px; }
   .setup-slide .group-label { font-size: 17px; }
   .setup-slide .chip { font-size: 21px; padding: 10px 17px; }
-  .setup-slide .group { flex: 1.3; }
+  .setup-slide .group { flex: 1.75; }
   .setup-slide .trained { display: flex; flex-direction: column; justify-content: center; gap: 10px; padding: 26px 30px;
     align-self: center; }
   .setup-slide .trained .group-label { margin: 0; }
   .setup-slide .trained-name { margin: 0; line-height: 1; }
-  .setup-slide .trained p { font-size: 26px; white-space: nowrap; }
+  .setup-slide .trained p { font-size: 26px; }
   .setup-slide .group .chips { margin-top: 12px; }
   .agent-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
   .agent-card { background: var(--bg-2); border: 1px solid #e3d3bd; border-left: 7px solid var(--c); border-radius: 12px;
     padding: 11px 16px; box-shadow: 0 4px 0 rgba(36,28,22,0.05); }
   .agent-card b { display: block; font-size: 24px; font-weight: 900; color: var(--ink); line-height: 1.15; }
   .agent-card span { display: block; font-size: 18px; font-weight: 700; color: var(--ink-2); margin-top: 2px; }
+  .setup-slide .big-chips .chip { font-size: 22px; padding: 11px 20px 11px 16px; color: var(--ink);
+    display: inline-flex; align-items: center; gap: 10px; border: 1px solid #e3d3bd; box-shadow: 0 4px 0 rgba(36,28,22,0.05); }
+  .setup-slide .big-chips .chip i { width: 13px; height: 13px; border-radius: 50%; display: inline-block; flex: none; }
+  .setup-slide .big-chips .chip b { margin-right: 2px; }
   /* live table */
   .table-card { width: 1080px; background: var(--bg-2); border: 1px solid #e3d3bd; border-radius: 16px; overflow: hidden;
     box-shadow: 0 6px 0 rgba(36,28,22,0.06); margin-top: 2px; }
@@ -293,17 +297,17 @@
       <div class="players">
         <div class="group">
           <div class="group-label">Hand-designed agents <span>rules and search we wrote</span></div>
-          <div class="agent-grid">
-            <div class="agent-card" style="--c:#6b5d52"><b>Random</b><span>baseline</span></div>
-            <div class="agent-card" style="--c:#2a78d6"><b>Greedy</b><span>best next move</span></div>
-            <div class="agent-card" style="--c:#eb6834"><b>Minimax</b><span>plans for hostile tiles</span></div>
-            <div class="agent-card" style="--c:#199e70"><b>Expectimax</b><span>plans for random tiles</span></div>
+          <div class="chips big-chips">
+            <span class="chip"><i style="background:#6b5d52"></i><b>Random</b> baseline</span>
+            <span class="chip"><i style="background:#2a78d6"></i><b>Greedy</b> best next move</span>
+            <span class="chip"><i style="background:#eb6834"></i><b>Minimax</b> plans for hostile tiles</span>
+            <span class="chip"><i style="background:#199e70"></i><b>Expectimax</b> plans for random tiles</span>
           </div>
         </div>
         <div class="trained">
           <div class="group-label">Trained by us</div>
           <div class="trained-name"><b>Tuplet</b></div>
-          <p>Played <b>1,000,000</b> games of 2048</p>
+          <p>Played <b>1,000,000</b> games&nbsp;of&nbsp;2048</p>
         </div>
       </div>
     </div>
