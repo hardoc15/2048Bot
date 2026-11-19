@@ -176,7 +176,8 @@
   .takeaways { display: flex; gap: 20px; margin-top: 26px; }
   .take { flex: 1; display: flex; gap: 14px; align-items: flex-start; }
   .take .t { flex: none; width: 54px; height: 54px; font-size: 22px; }
-  .take p { margin: 0; font-size: 20px; line-height: 1.38; }
+  .take p { margin: 0; font-size: 22px; line-height: 1.35; color: var(--ink); font-weight: 700; }
+  .take p b { color: var(--red); font-weight: 900; }
 
   /* progress tiles: 2, 4, 8, 16, 32 */
   .progress { position: absolute; left: 80px; bottom: 28px; display: flex; gap: 8px; }
@@ -346,9 +347,9 @@
         <tr><td><span class="who"><i style="background:#6250d6"></i>Tuplet (trained)<small>1M training games</small></span></td><td class="n">68</td><td class="n"><span class="t tchip t64">64</span></td><td class="n">686</td></tr>
       </table></div>
       <div class="takeaways">
-        <div class="take"><span class="t t32">1</span><p><b>Tile placement dominates.</b> Every non-random agent loses 93%+ of its score.</p></div>
-        <div class="take"><span class="t t64">2</span><p><b>Playing well is not surviving.</b> Tuplet: 6.9x better normally, 1.2x vs. the villain.</p></div>
-        <div class="take"><span class="t t2048" style="color:#fff">3</span><p><b>Planning for the worst pays off.</b> Minimax survives longest (99 moves).</p></div>
+        <div class="take"><span class="t t32">1</span><p>Every smart agent loses <b>93%+</b> of its score to the villain.</p></div>
+        <div class="take"><span class="t t64">2</span><p>Training made Tuplet <b>7x</b> better, but not against the villain.</p></div>
+        <div class="take"><span class="t t2048" style="color:#fff">3</span><p><b>Minimax</b>, which plans for the worst, survives longest.</p></div>
       </div>
     </div>
   </section>

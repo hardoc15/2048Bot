@@ -131,7 +131,7 @@ def td_numbers() -> dict:
     return {
         "SVG_NORMAL": line_svg(pts("random"), "#8a5a3c", baseline=curve["random"].get(0)),
         "SVG_VILLAIN": line_svg(pts("villain"), "#d63a3a", baseline=curve["villain"].get(0)),
-        "TD_TAKEAWAY_SHORT": f"Tuplet: {normal_gain:.1f}x better normally, {villain_gain:.1f}x vs. the villain.",
+        "TD_TAKEAWAY_SHORT": f"Training made Tuplet <b>{normal_gain:.0f}x</b> better, but not against the villain.",
         "TD_DISTINCT": f"{distinct.min()} to {distinct.max()}",
         "TD_GAMES": fmt(final),
         "TD_GAMES_SHORT": f"{final / 1e6:g}M" if final >= 1e6 else f"{final / 1e3:g}k",
@@ -296,8 +296,8 @@ def agents_numbers() -> dict:
         "BEST_VILLAIN_NAME": AGENT_NAME[best_v],
         "BEST_VILLAIN_MOVES": fmt(table[best_v]["villain_moves"]),
         "BEST_VILLAIN_SCORE": fmt(table[best_v]["villain"]),
-        "TAKE_COLLAPSE": f"Every non-random agent loses {min(drops) * 100:.0f}%+ of its score.",
-        "TAKE_SURVIVOR": f"{AGENT_NAME[best_v]} survives longest ({fmt(table[best_v]['villain_moves'])} moves).",
+        "TAKE_COLLAPSE": f"Every smart agent loses <b>{min(drops) * 100:.0f}%+</b> of its score to the villain.",
+        "TAKE_SURVIVOR": f"<b>{short[best_v]}</b>, which plans for the worst, survives longest.",
     }
 
 

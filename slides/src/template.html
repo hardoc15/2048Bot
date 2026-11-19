@@ -176,7 +176,8 @@
   .takeaways { display: flex; gap: 20px; margin-top: 26px; }
   .take { flex: 1; display: flex; gap: 14px; align-items: flex-start; }
   .take .t { flex: none; width: 54px; height: 54px; font-size: 22px; }
-  .take p { margin: 0; font-size: 20px; line-height: 1.38; }
+  .take p { margin: 0; font-size: 22px; line-height: 1.35; color: var(--ink); font-weight: 700; }
+  .take p b { color: var(--red); font-weight: 900; }
 
   /* progress tiles: 2, 4, 8, 16, 32 */
   .progress { position: absolute; left: 80px; bottom: 28px; display: flex; gap: 8px; }
@@ -342,9 +343,9 @@
 {{AGENT_ROWS}}
       </table></div>
       <div class="takeaways">
-        <div class="take"><span class="t t32">1</span><p><b>Tile placement dominates.</b> {{TAKE_COLLAPSE}}</p></div>
-        <div class="take"><span class="t t64">2</span><p><b>Playing well is not surviving.</b> {{TD_TAKEAWAY_SHORT}}</p></div>
-        <div class="take"><span class="t t2048" style="color:#fff">3</span><p><b>Planning for the worst pays off.</b> {{TAKE_SURVIVOR}}</p></div>
+        <div class="take"><span class="t t32">1</span><p>{{TAKE_COLLAPSE}}</p></div>
+        <div class="take"><span class="t t64">2</span><p>{{TD_TAKEAWAY_SHORT}}</p></div>
+        <div class="take"><span class="t t2048" style="color:#fff">3</span><p>{{TAKE_SURVIVOR}}</p></div>
       </div>
     </div>
   </section>
