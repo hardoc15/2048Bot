@@ -185,11 +185,11 @@ def agent_table():
     return SAMPLE, True
 
 
-def dumbbell_svg(table, width=1040, height=340) -> str:
+def dumbbell_svg(table, width=1048, height=362) -> str:
     """Log-scale dot plot: each agent's score against the villain, in the normal game, and (if run) with the helper."""
-    left, right, top, bottom = 190, 30, 22, 40
+    left, right, top, bottom = 190, 24, 6, 34
     vals = [v[k] for v in table.values() for k in ("random", "villain", "helper") if k in v]
-    lo, hi = math.log10(min(vals) / 1.45), math.log10(max(vals) * 1.7)
+    lo, hi = math.log10(min(vals) / 1.45), math.log10(max(vals) * 2.05)
     sx = lambda v: left + (math.log10(v) - lo) / (hi - lo) * (width - left - right)
     rows = [a for a in AGENT_ORDER if a in table]
     step = (height - top - bottom) / len(rows)
@@ -197,14 +197,14 @@ def dumbbell_svg(table, width=1040, height=340) -> str:
     for e in range(int(math.ceil(lo)), int(math.floor(hi)) + 1):
         x = sx(10 ** e)
         parts.append(f'<line x1="{x:.1f}" x2="{x:.1f}" y1="{top}" y2="{height - bottom}" stroke="#eadfce" stroke-width="1.2"/>')
-        parts.append(f'<text x="{x:.1f}" y="{height - 14}" fill="#4a3a2f" font-size="15" font-weight="700" '
+        parts.append(f'<text x="{x:.1f}" y="{height - 8}" fill="#4a3a2f" font-size="16" font-weight="700" '
                      f'text-anchor="middle">{10 ** e:,}</text>')
     for i, a in enumerate(rows):
         y = top + step * (i + 0.5)
         d = table[a]
         keys = [k for k in ("villain", "random", "helper") if k in d]
         xs = [sx(d[k]) for k in keys]
-        parts.append(f'<text x="0" y="{y + 7:.1f}" fill="#4a3a2f" font-size="20" font-weight="600" '
+        parts.append(f'<text x="0" y="{y + 7:.1f}" fill="#4a3a2f" font-size="23" font-weight="600" '
                      f'text-anchor="start">{AGENT_NAME[a]}</text>')
         parts.append(f'<line x1="{min(xs):.1f}" x2="{max(xs):.1f}" y1="{y:.1f}" y2="{y:.1f}" stroke="#e7d8c3" '
                      f'stroke-width="11" stroke-linecap="round"/>')
