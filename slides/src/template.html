@@ -269,15 +269,15 @@
       <h2>Every agent <span class="red">collapses</span> against the villain.</h2>
       <div class="chart wide"><div class="legend-row">{{AGENT_LEGEND}}</div>{{SVG_AGENTS}}</div>
       <div class="facts">
-        <div class="fact" style="border-top-color:#8a5a3c"><div class="what">Highest average score, normal game</div>
+        <div class="fact" style="border-top-color:#8a5a3c"><div class="what">Highest score, normal game</div>
           <div class="num">{{BEST_NORMAL_SCORE}}</div>
-          <div class="lab"><b>{{BEST_NORMAL_NAME}}.</b> Reaches the 2048 tile in {{BEST_NORMAL_2048}} of 100 games.</div></div>
-        <div class="fact" style="border-top-color:var(--red)"><div class="what">Longest survival vs. the villain</div>
+          <div class="lab"><b>{{BEST_NORMAL_NAME}}</b></div></div>
+        <div class="fact" style="border-top-color:var(--red)"><div class="what">Longest survival vs. villain</div>
           <div class="num red">{{BEST_VILLAIN_MOVES}} moves</div>
-          <div class="lab"><b>{{BEST_VILLAIN_NAME}},</b> on average before losing. Its average score: {{BEST_VILLAIN_SCORE}}.</div></div>
+          <div class="lab"><b>{{BEST_VILLAIN_NAME}}</b></div></div>
         <div class="fact" style="border-top-color:var(--ink-2)"><div class="what">Score lost to a weak villain</div>
           <div class="num">{{GREEDY_D1_DROP}}%</div>
-          <div class="lab"><b>Greedy's</b> average drops from {{GREEDY_RANDOM}} to {{GREEDY_VILLAIN_D1}} when a villain looking just 1 move ahead places the tiles.</div></div>
+          <div class="lab"><b>Greedy:</b> {{GREEDY_RANDOM}} to {{GREEDY_VILLAIN_D1}}</div></div>
       </div>
     </div>
   </section>
