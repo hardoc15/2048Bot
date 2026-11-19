@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="480" viewBox="0 0 1200 480" role="img" aria-labelledby="title description">
+<title id="title">2048 random baseline</title>
+<desc id="description">Histograms of final scores and highest tiles over 100 games.</desc>
+<style>text{font-family:Arial,sans-serif;fill:#14253b}.title{font-size:34px;font-weight:bold}.summary{font-size:18px}.panel{font-size:22px;font-weight:bold}.label{font-size:15px}.value{font-size:15px;font-weight:bold}</style>
+<rect width="1200" height="480" fill="white"/>
+<text x="56" y="49" class="title">2048 random baseline</text>
+<text x="56" y="80" class="summary">100 games · Mean score 1,141.48 · 0/100 reached 2048 · Agent seed 0, game seeds 0–99</text>
+<text x="56" y="133" class="panel">Final score distribution</text>
+<text x="56" y="157" class="label">Games</text>
+<line x1="56" x2="546" y1="395.0" y2="395.0" stroke="#cbd5e1"/>
+<text x="47" y="400.0" text-anchor="end" class="label">0</text>
+<line x1="56" x2="546" y1="341.25" y2="341.25" stroke="#cbd5e1"/>
+<text x="47" y="346.25" text-anchor="end" class="label">10</text>
+<line x1="56" x2="546" y1="287.5" y2="287.5" stroke="#cbd5e1"/>
+<text x="47" y="292.5" text-anchor="end" class="label">20</text>
+<line x1="56" x2="546" y1="233.75" y2="233.75" stroke="#cbd5e1"/>
+<text x="47" y="238.75" text-anchor="end" class="label">30</text>
+<line x1="56" x2="546" y1="180.0" y2="180.0" stroke="#cbd5e1"/>
+<text x="47" y="185.0" text-anchor="end" class="label">40</text>
+<rect x="67.025" y="373.5" width="39.2" height="21.5" fill="#146b70"/>
+<text x="86.625" y="366.5" text-anchor="middle" class="value">4</text>
+<text x="86.625" y="419" text-anchor="middle" class="label">0–399</text>
+<rect x="128.275" y="217.625" width="39.2" height="177.375" fill="#146b70"/>
+<text x="147.875" y="210.625" text-anchor="middle" class="value">33</text>
+<text x="147.875" y="419" text-anchor="middle" class="label">400–799</text>
+<rect x="189.525" y="282.125" width="39.2" height="112.875" fill="#146b70"/>
+<text x="209.125" y="275.125" text-anchor="middle" class="value">21</text>
+<text x="209.125" y="419" text-anchor="middle" class="label">800–1199</text>
+<rect x="250.775" y="244.5" width="39.2" height="150.5" fill="#146b70"/>
+<text x="270.375" y="237.5" text-anchor="middle" class="value">28</text>
+<text x="270.375" y="419" text-anchor="middle" class="label">1200–1599</text>
+<rect x="312.025" y="378.875" width="39.2" height="16.125" fill="#146b70"/>
+<text x="331.625" y="371.875" text-anchor="middle" class="value">3</text>
+<text x="331.625" y="419" text-anchor="middle" class="label">1600–1999</text>
+<rect x="373.275" y="368.125" width="39.2" height="26.875" fill="#146b70"/>
+<text x="392.875" y="361.125" text-anchor="middle" class="value">5</text>
+<text x="392.875" y="419" text-anchor="middle" class="label">2000–2399</text>
+<rect x="434.525" y="368.125" width="39.2" height="26.875" fill="#146b70"/>
+<text x="454.125" y="361.125" text-anchor="middle" class="value">5</text>
+<text x="454.125" y="419" text-anchor="middle" class="label">2400–2799</text>
+<rect x="495.775" y="389.625" width="39.2" height="5.375" fill="#146b70"/>
+<text x="515.375" y="382.625" text-anchor="middle" class="value">1</text>
+<text x="515.375" y="419" text-anchor="middle" class="label">2800–3199</text>
+<text x="301.0" y="449" text-anchor="middle" class="label">Final score (400-point bins)</text>
+<text x="650" y="133" class="panel">Highest tile distribution</text>
+<text x="650" y="157" class="label">Games</text>
+<line x1="650" x2="1140" y1="395.0" y2="395.0" stroke="#cbd5e1"/>
+<text x="641" y="400.0" text-anchor="end" class="label">0</text>
+<line x1="650" x2="1140" y1="352.0" y2="352.0" stroke="#cbd5e1"/>
+<text x="641" y="357.0" text-anchor="end" class="label">10</text>
+<line x1="650" x2="1140" y1="309.0" y2="309.0" stroke="#cbd5e1"/>
+<text x="641" y="314.0" text-anchor="end" class="label">20</text>
+<line x1="650" x2="1140" y1="266.0" y2="266.0" stroke="#cbd5e1"/>
+<text x="641" y="271.0" text-anchor="end" class="label">30</text>
+<line x1="650" x2="1140" y1="223.0" y2="223.0" stroke="#cbd5e1"/>
+<text x="641" y="228.0" text-anchor="end" class="label">40</text>
+<line x1="650" x2="1140" y1="180.0" y2="180.0" stroke="#cbd5e1"/>
+<text x="641" y="185.0" text-anchor="end" class="label">50</text>
+<rect x="672.05" y="373.5" width="78.4" height="21.5" fill="#146b70"/>
+<text x="711.25" y="366.5" text-anchor="middle" class="value">5</text>
+<text x="711.25" y="419" text-anchor="middle" class="label">32</text>
+<rect x="794.55" y="231.6" width="78.4" height="163.4" fill="#146b70"/>
+<text x="833.75" y="224.6" text-anchor="middle" class="value">38</text>
+<text x="833.75" y="419" text-anchor="middle" class="label">64</text>
+<rect x="917.05" y="197.2" width="78.4" height="197.8" fill="#146b70"/>
+<text x="956.25" y="190.2" text-anchor="middle" class="value">46</text>
+<text x="956.25" y="419" text-anchor="middle" class="label">128</text>
+<rect x="1039.55" y="347.7" width="78.4" height="47.3" fill="#146b70"/>
+<text x="1078.75" y="340.7" text-anchor="middle" class="value">11</text>
+<text x="1078.75" y="419" text-anchor="middle" class="label">256</text>
+<text x="895.0" y="449" text-anchor="middle" class="label">Highest tile reached in each game</text>
+</svg>
