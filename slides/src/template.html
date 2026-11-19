@@ -133,6 +133,20 @@
   .title-slide .title-tiles .t { width: 146px; height: 146px; font-size: 90px; border-radius: 18px; }
   .title-slide .title-sub { font-size: 31px !important; }
   .title-slide .invite { margin-top: 30px; font-size: 28px; padding: 22px 30px; max-width: 1060px; }
+  .ranks { margin-top: 24px; }
+  .ranks-title { font-size: 15px; font-weight: 900; text-transform: uppercase; letter-spacing: 1.3px; color: var(--ink-2); margin-bottom: 12px; }
+  .ranks-title span { text-transform: none; letter-spacing: 0; font-weight: 700; margin-left: 8px; }
+  .rank-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .rank-label { width: 168px; flex: none; font-size: 21px; font-weight: 900; }
+  .rchip { display: inline-flex; align-items: center; gap: 9px; background: var(--bg-2); border: 1px solid #e3d3bd;
+    border-radius: 99px; padding: 6px 15px 6px 6px; font-size: 20px; font-weight: 800; white-space: nowrap; }
+  .rchip .n { width: 30px; height: 30px; border-radius: 50%; background: #f3e7d6; color: var(--ink); font-size: 16px;
+    font-weight: 900; display: inline-flex; align-items: center; justify-content: center; }
+  .rchip i { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+  .rchip.first { border: 2px solid var(--gold); background: #fff4df; }
+  .rchip.first .n { background: var(--gold); color: #fff; }
+  .villain-row .rchip.first { border-color: var(--red); background: #fdeeee; }
+  .villain-row .rchip.first .n { background: var(--red); }
   /* live table */
   .table-card { width: 1080px; background: var(--bg-2); border: 1px solid #e3d3bd; border-radius: 16px; overflow: hidden;
     box-shadow: 0 6px 0 rgba(36,28,22,0.06); margin-top: 2px; }
@@ -276,16 +290,10 @@
       <div class="kicker"><span class="t t8" style="width:30px;height:30px;font-size:13px;border-radius:6px">8</span>Result 1: all five agents, same starting positions</div>
       <h2>Every agent <span class="red">collapses</span> against the villain.</h2>
       <div class="chart wide"><div class="legend-row">{{AGENT_LEGEND}}</div>{{SVG_AGENTS}}</div>
-      <div class="facts">
-        <div class="fact" style="border-top-color:#8a5a3c"><div class="what">Highest score, normal game</div>
-          <div class="num">{{BEST_NORMAL_SCORE}}</div>
-          <div class="lab"><b>{{BEST_NORMAL_NAME}}</b></div></div>
-        <div class="fact" style="border-top-color:var(--red)"><div class="what">Longest survival vs. villain</div>
-          <div class="num red">{{BEST_VILLAIN_MOVES}} moves</div>
-          <div class="lab"><b>{{BEST_VILLAIN_NAME}}</b></div></div>
-        <div class="fact" style="border-top-color:var(--ink-2)"><div class="what">Score lost to a weak villain</div>
-          <div class="num">{{GREEDY_D1_DROP}}%</div>
-          <div class="lab"><b>Greedy:</b> {{GREEDY_RANDOM}} to {{GREEDY_VILLAIN_D1}}</div></div>
+      <div class="ranks">
+        <div class="ranks-title">Who wins? <span>Agents ranked by average score</span></div>
+        <div class="rank-row"><div class="rank-label">Normal game</div>{{RANK_NORMAL}}</div>
+        <div class="rank-row villain-row"><div class="rank-label red">Vs. the villain</div>{{RANK_VILLAIN}}</div>
       </div>
     </div>
   </section>

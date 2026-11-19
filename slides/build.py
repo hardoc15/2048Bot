@@ -240,7 +240,17 @@ def agents_numbers() -> dict:
         f'<td class="n"><span class="t tchip t{int(table[a]["villain_tile"])}">{int(table[a]["villain_tile"])}</span></td>'
         f'<td class="n">{fmt(table[a]["villain"])}</td></tr>'
         for a in AGENT_ORDER if a in table)
+    dot = {"random": "#6b5d52", "greedy": "#2a78d6", "minimax": "#eb6834", "expectimax": "#199e70", "td": "#6250d6"}
+    short = {**AGENT_NAME, "td": "Tuplet"}
+
+    def ranking(key):
+        order = sorted(table, key=lambda a: -table[a][key])
+        return "".join(f'<span class="rchip{" first" if i == 0 else ""}"><span class="n">{i + 1}</span>'
+                       f'<i style="background:{dot[a]}"></i>{short[a]}</span>' for i, a in enumerate(order))
+
     return {
+        "RANK_NORMAL": ranking("random"),
+        "RANK_VILLAIN": ranking("villain"),
         "SAMPLE_BANNER": '<div class="sample-banner">SAMPLE DATA: final numbers pending</div>' if sample else "",
         "SVG_AGENTS": dumbbell_svg(table),
         "AGENT_LEGEND": legend,
