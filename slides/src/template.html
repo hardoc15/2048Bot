@@ -147,6 +147,8 @@
   .rchip.first .n { background: var(--gold); color: #fff; }
   .villain-row .rchip.first { border-color: var(--red); background: #fdeeee; }
   .villain-row .rchip.first .n { background: var(--red); }
+  .slope { margin-top: 14px; }
+  .slope svg { display: block; width: 100%; height: auto; }
   /* live table */
   .table-card { width: 1080px; background: var(--bg-2); border: 1px solid #e3d3bd; border-radius: 16px; overflow: hidden;
     box-shadow: 0 6px 0 rgba(36,28,22,0.06); margin-top: 2px; }
@@ -290,11 +292,7 @@
       <div class="kicker"><span class="t t8" style="width:30px;height:30px;font-size:13px;border-radius:6px">8</span>Result 1: all five agents, same starting positions</div>
       <h2>Every agent <span class="red">collapses</span> against the villain.</h2>
       <div class="chart wide"><div class="legend-row">{{AGENT_LEGEND}}</div>{{SVG_AGENTS}}</div>
-      <div class="ranks">
-        <div class="ranks-title">Who wins? <span>Agents ranked by average score</span></div>
-        <div class="rank-row"><div class="rank-label">Normal game</div>{{RANK_NORMAL}}</div>
-        <div class="rank-row villain-row"><div class="rank-label red">Vs. the villain</div>{{RANK_VILLAIN}}</div>
-      </div>
+      <div class="slope">{{SVG_SLOPE}}</div>
     </div>
   </section>
 

@@ -248,7 +248,40 @@ def agents_numbers() -> dict:
         return "".join(f'<span class="rchip{" first" if i == 0 else ""}"><span class="n">{i + 1}</span>'
                        f'<i style="background:{dot[a]}"></i>{short[a]}</span>' for i, a in enumerate(order))
 
+    def slope_svg(width=1060, height=250):
+        """Rank in the normal game (left) vs. against the villain (right), one line per agent."""
+        n_rank = {a: i for i, a in enumerate(sorted(table, key=lambda a: -table[a]["random"]))}
+        v_rank = {a: i for i, a in enumerate(sorted(table, key=lambda a: -table[a]["villain"]))}
+        movers = {a for a in table if n_rank[a] != v_rank[a]}
+        top, step, xl, xr = 52, 38, 330, 730
+        y = lambda r: top + r * step
+        parts = [f'<svg viewBox="0 0 {width} {height}" role="img">',
+                 f'<text x="{xl}" y="20" fill="#241c16" font-size="20" font-weight="900" text-anchor="end">Normal game</text>',
+                 f'<text x="{xr}" y="20" fill="#d63a3a" font-size="20" font-weight="900">Vs. the villain</text>',
+                 f'<text x="{(xl + xr) / 2}" y="20" fill="#3f322a" font-size="15" font-weight="800" text-anchor="middle">RANK BY AVERAGE SCORE</text>']
+        for a in sorted(table, key=lambda a: a in movers):  # draw highlighted lines last
+            hot = a in movers
+            col = dot[a] if hot else "#d9c9b3"
+            parts.append(f'<line x1="{xl + 22}" y1="{y(n_rank[a])}" x2="{xr - 22}" y2="{y(v_rank[a])}" stroke="{col}" '
+                         f'stroke-width="{6 if hot else 3}" stroke-linecap="round"/>')
+        for a in table:
+            hot = a in movers
+            col = dot[a] if hot else "#b9a993"
+            wt = 900 if hot else 700
+            ink = "#241c16" if hot else "#5a4636"
+            for side, r in (("l", n_rank[a]), ("r", v_rank[a])):
+                cx = xl + 10 if side == "l" else xr - 10
+                parts.append(f'<circle cx="{cx}" cy="{y(r)}" r="9" fill="{col}" stroke="#fffdf9" stroke-width="3"/>')
+                label = f"{r + 1}. {short[a]}"
+                if side == "l":
+                    parts.append(f'<text x="{xl - 10}" y="{y(r) + 7}" fill="{ink}" font-size="20" font-weight="{wt}" text-anchor="end">{label}</text>')
+                else:
+                    parts.append(f'<text x="{xr + 10}" y="{y(r) + 7}" fill="{ink}" font-size="20" font-weight="{wt}">{label}</text>')
+        parts.append("</svg>")
+        return "".join(parts)
+
     return {
+        "SVG_SLOPE": slope_svg(),
         "RANK_NORMAL": ranking("random"),
         "RANK_VILLAIN": ranking("villain"),
         "SAMPLE_BANNER": '<div class="sample-banner">SAMPLE DATA: final numbers pending</div>' if sample else "",
