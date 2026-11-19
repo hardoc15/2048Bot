@@ -4,7 +4,7 @@ An empirical study of how different AI decision-making strategies perform in the
 
 Built as a final project for **COMP 560: Artificial Intelligence**.
 
-> **Status:** In development. The agents and experiments described below are being implemented. No performance results are reported yet. They will be added once experiments have been run and checked.
+> **Status:** The four-agent comparison is in progress. The minimax notebook contains the results of the depth and weight experiments.
 
 ---
 
@@ -227,7 +227,7 @@ jupyter notebook experiments/results.ipynb   # then Kernel → Restart & Run All
 
 ## Getting Started
 
-**Requirements:** Python 3.8+ (no third-party packages)
+**Requirements:** Python 3.8+ for the engine and agents. Install the packages in `requirements.txt` to run the notebooks.
 
 ```bash
 git clone https://github.com/hardoc15/2048Bot.git
@@ -245,6 +245,28 @@ python3 -m game --seed 42   # same tile spawns every time
 
 ```bash
 python3 -m unittest discover -s tests
+```
+
+### Run Minimax
+
+`MinimaxAgent` uses the shared board heuristic and alpha–beta pruning. A depth of two covers two player moves and their tile spawns. Search assumes a worst-case spawn, while the game uses the standard random-spawn rules.
+
+```python
+from agents.minimax import MinimaxAgent
+from game import play_game
+
+print(play_game(MinimaxAgent(depth=2), seed=0))
+```
+
+Open [the executed notebook](experiments/minimax.ipynb) to inspect the heuristic sweep, held-out score tables, and plots. The sweep uses depth one on seeds 2000–2023. Evaluation uses seeds 3000–3099. The shared weights stay fixed for the depth-one versus depth-two comparison.
+
+With shared weights, depth two averaged 17,591 points and reached 2048 in 27 of 100 games. Depth one averaged 8,371 points and reached 2048 in none of those games. The selected weight adjustment raised the depth-one mean to 9,020 points, with a paired 95% bootstrap interval that includes zero for the gain.
+
+Run these commands from the repository root to regenerate the notebook outputs, [per-game scores](experiments/results/minimax_games.csv), [summary table](experiments/results/minimax_summary.csv), and [figure](experiments/figures/minimax_comparison.png). The depth-two run can take several minutes, and measured times vary with hardware.
+
+```bash
+python3 -m pip install -r requirements.txt
+python3 -m jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.timeout=1200 experiments/minimax.ipynb
 ```
 
 ## Writing an Agent
