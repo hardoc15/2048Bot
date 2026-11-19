@@ -185,11 +185,11 @@ def agent_table():
     return SAMPLE, True
 
 
-def dumbbell_svg(table, width=1040, height=290) -> str:
+def dumbbell_svg(table, width=1040, height=340) -> str:
     """Log-scale dot plot: each agent's score against the villain, in the normal game, and (if run) with the helper."""
-    left, right, top, bottom = 205, 30, 18, 40
+    left, right, top, bottom = 190, 30, 22, 40
     vals = [v[k] for v in table.values() for k in ("random", "villain", "helper") if k in v]
-    lo, hi = math.log10(min(vals) / 1.8), math.log10(max(vals) * 1.8)
+    lo, hi = math.log10(min(vals) / 1.45), math.log10(max(vals) * 1.7)
     sx = lambda v: left + (math.log10(v) - lo) / (hi - lo) * (width - left - right)
     rows = [a for a in AGENT_ORDER if a in table]
     step = (height - top - bottom) / len(rows)
@@ -207,16 +207,16 @@ def dumbbell_svg(table, width=1040, height=290) -> str:
         parts.append(f'<text x="0" y="{y + 7:.1f}" fill="#4a3a2f" font-size="20" font-weight="600" '
                      f'text-anchor="start">{AGENT_NAME[a]}</text>')
         parts.append(f'<line x1="{min(xs):.1f}" x2="{max(xs):.1f}" y1="{y:.1f}" y2="{y:.1f}" stroke="#e7d8c3" '
-                     f'stroke-width="9" stroke-linecap="round"/>')
+                     f'stroke-width="11" stroke-linecap="round"/>')
         for k, x in zip(keys, xs):
-            parts.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="10" fill="{SPAWNER_COLOR[k]}" stroke="#fffdf9" stroke-width="3"/>')
-        parts.append(f'<text x="{sx(d["villain"]) - 16:.1f}" y="{y + 6:.1f}" fill="{SPAWNER_COLOR["villain"]}" '
-                     f'font-size="16" font-weight="900" text-anchor="end">{d["villain"]:,.0f}</text>')
+            parts.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="12.5" fill="{SPAWNER_COLOR[k]}" stroke="#fffdf9" stroke-width="3"/>')
+        parts.append(f'<text x="{sx(d["villain"]) - 19:.1f}" y="{y + 6:.1f}" fill="{SPAWNER_COLOR["villain"]}" '
+                     f'font-size="18" font-weight="900" text-anchor="end">{d["villain"]:,.0f}</text>')
         top_key = "helper" if "helper" in d else "random"
-        parts.append(f'<text x="{sx(d[top_key]) + 16:.1f}" y="{y + 6:.1f}" fill="#241c16" font-size="16" '
+        parts.append(f'<text x="{sx(d[top_key]) + 19:.1f}" y="{y + 6:.1f}" fill="#241c16" font-size="18" '
                      f'font-weight="900">{d[top_key]:,.0f}</text>')
         if top_key == "helper":
-            parts.append(f'<text x="{sx(d["random"]):.1f}" y="{y - 15:.1f}" fill="#3d3a36" font-size="14" '
+            parts.append(f'<text x="{sx(d["random"]):.1f}" y="{y - 19:.1f}" fill="#3d3a36" font-size="15" '
                          f'font-weight="800" text-anchor="middle">{d["random"]:,.0f}</text>')
     parts.append("</svg>")
     return "".join(parts)
