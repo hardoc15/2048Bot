@@ -125,6 +125,14 @@
   .lede { margin: -18px 0 16px; font-size: 21px; color: var(--ink); }
   .fact .what { font-size: 14px; font-weight: 900; text-transform: uppercase; letter-spacing: 1.2px; color: var(--ink-2);
     margin-bottom: 4px; }
+  /* title slide: larger content */
+  .title-slide { padding-top: 92px; }
+  .title-slide .kicker { font-size: 24px; margin-bottom: 22px; }
+  .title-slide h1 { font-size: 76px; }
+  .title-slide .title-tiles { gap: 18px; margin: 26px 0 34px; }
+  .title-slide .title-tiles .t { width: 160px; height: 160px; font-size: 98px; border-radius: 20px; }
+  .title-slide .title-sub { font-size: 33px !important; }
+  .title-slide .invite { margin-top: 34px; font-size: 29px; padding: 24px 32px; max-width: 1080px; }
   /* live table */
   .table-card { width: 1080px; background: var(--bg-2); border: 1px solid #e3d3bd; border-radius: 16px; overflow: hidden;
     box-shadow: 0 6px 0 rgba(36,28,22,0.06); margin-top: 2px; }
@@ -216,12 +224,12 @@
 <div id="stage">
 
   <!-- 1: title -->
-  <section class="slide">
+  <section class="slide title-slide">
     <div class="content">
       <div class="kicker">{{TEAM}}</div>
       <h1>Who's the Real Opponent in</h1>
       <div class="title-tiles"><span class="t t2">2</span><span class="t t32">0</span><span class="t t256">4</span><span class="t t2048">8</span></div>
-      <p style="font-size:30px; margin:0">Search and learning agents vs. an AI that decides where the tiles go</p>
+      <p class="title-sub" style="margin:0">Search and learning agents vs. an AI that decides where the tiles go</p>
       <div class="invite">
         <b>Want to play?</b> Use the arrow keys in the corner. You're up against our <b class="red">villain</b>, an AI choosing where your tiles land.
         Keep playing while we talk.
