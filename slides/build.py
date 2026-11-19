@@ -96,6 +96,7 @@ def greedy_numbers() -> dict:
         "GREEDY_RANDOM": fmt(normal.score.mean()),
         "GREEDY_HELPER": fmt(helper.score.mean()),
         "GREEDY_VILLAIN_D1": fmt(pick("villain", 1).score.mean()),
+        "GREEDY_D1_DROP": fmt((1 - pick("villain", 1).score.mean() / normal.score.mean()) * 100),
         "GREEDY_HELPER_D1": fmt(pick("helper", 1).score.mean()),
         "GREEDY_2048": fmt((normal.max_tile >= 2048).mean() * 100),
         "SWING": fmt(helper.score.mean() / villain.score.mean()),
