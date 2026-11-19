@@ -144,6 +144,32 @@ python3 -m spawners --spawner villain
 python3 -m spawners --spawner helper
 ```
 
+### TD bot: learning to play, and the villain
+
+The TD bot ([`td/`](td/)) learns 2048 from self-play with temporal-difference learning on an n-tuple network (method from Szubert & Jaskowski, 2014, implemented from scratch). The network is 5 four-cell patterns (two rows, three 2×2 squares), each shared across the board's 8 rotations/reflections. It trains only on normal random tiles. A fast 64-bit board compiled with Numba (checked move-for-move against the shared engine) trains 1,000,000 games in about 23 minutes on a laptop.
+
+Each saved checkpoint plays the same 100 seeded games, with random tiles and against the full-force villain (depth 2):
+
+| Games trained | Normal game: avg score | Normal game: reached 2048 | Vs. villain: avg score |
+| ---: | ---: | ---: | ---: |
+| 0 (untrained) | 3,316 | 0% | 278 |
+| 1,000 | 13,213 | 7% | 927 |
+| 10,000 | 27,978 | 62% | 584 |
+| 30,000 | 40,462 | 83% | 943 |
+| 100,000 | 40,643 | 85% | 903 |
+| 1,000,000 | 40,585 | 83% | 686 |
+
+- **It learns to play 2048 well:** 83% of games reach 2048 (Greedy: 12%), and 43% of late training games reach 4096. Normal-game performance plateaus after about 30,000 games with this network size.
+- **It does not learn to survive the villain:** from 100 to 1,000,000 training games its normal-game score grows 6.9×, but against the villain only 1.2×, with no consistent trend. The villain predicts its opponent with the hand-written heuristic, not the bot's learned values, and still wins.
+- **Caveat:** bot and villain are both deterministic, so each checkpoint's 100 villain games contain only 10–18 distinct outcomes.
+
+Reproduce:
+
+```bash
+python3 -m td.train --games 1000000 --seed 0        # ~23 minutes; writes td/checkpoints/
+python3 -m experiments.td_learning_curve            # every checkpoint vs. random tiles and the villain
+```
+
 ### Results notebook and figures
 
 [`experiments/results.ipynb`](experiments/results.ipynb) runs the Greedy agent on 100 seeded games and produces its tables and figures for the slides and paper (saved to `experiments/figures/`): a summary table, tile-reach curve, score distribution, highest-tile distribution, heuristic ablation, weight-sensitivity heatmap, and a single-game demo, plus the spawner results (scores by spawner, tile reach by spawner, and the same start played out against the villain, random, and helper).
@@ -158,7 +184,7 @@ jupyter notebook experiments/results.ipynb   # then Kernel → Restart & Run All
 ```text
 2048Bot/
 ├── README.md
-├── requirements.txt      # Notebook dependencies (the game and agents need none)
+├── requirements.txt      # numpy + numba (TD bot); matplotlib, pandas, jupyter (notebook, slides)
 ├── game/                 # 2048 engine (on main)
 │   ├── board.py          #   Pure board functions: moves, merges, spawns, game over
 │   ├── game.py           #   Game class: board + score + seeded random spawns
@@ -173,10 +199,21 @@ jupyter notebook experiments/results.ipynb   # then Kernel → Restart & Run All
 │   ├── adversarial.py    #   VillainSpawner / HelperSpawner (adversarial search)
 │   ├── runner.py         #   play_game_with_spawner
 │   └── __main__.py       #   Play against the villain or helper yourself
-├── tests/                # Unit tests for the engine, agents, and spawners
+├── td/                   # TD-learning bot (n-tuple network)
+│   ├── bitboard.py       #   Fast 64-bit board (Numba), checked move-for-move against game/
+│   ├── ntuple.py         #   N-tuple network + TD(0) afterstate learning
+│   ├── train.py          #   Training with checkpoints
+│   ├── agent.py          #   TDAgent: plays from a saved checkpoint
+│   └── checkpoints/      #   Saved networks + training log
+├── slides/
+│   ├── src/              #   Slide template + browser game/villain (game.js)
+│   ├── build.py          #   Builds the self-contained presentation from results
+│   └── presentation.html #   Open in any browser; no internet needed
+├── tests/                # Unit tests for the engine, agents, spawners, TD bot, and browser game
 ├── experiments/
 │   ├── evaluate.py       # Run N seeded games for an agent and report metrics
 │   ├── spawner_experiment.py  # Greedy vs. villain / random / helper
+│   ├── td_learning_curve.py   # TD checkpoints vs. random tiles and the villain
 │   ├── results.ipynb     # All tables and figures
 │   ├── figures/          # PNGs for slides and paper
 │   └── results/          # Per-game CSV output
@@ -249,6 +286,29 @@ A board is an immutable tuple of rows (`0` = empty). Every function returns a ne
 | `max_tile(board)` / `is_game_over(board)` | Largest tile / no legal moves | Heuristics, terminal checks |
 
 Commands for reproducing the experiments, including the seeds and search depths used, will be added once the agents are complete.
+
+## Presentation
+
+[`slides/presentation.html`](slides/presentation.html) is a single self-contained file: open it in any browser, with no internet needed. A live game against the villain (placing 80% of tiles; the rest are random) runs in the corner of every slide so someone can play while we present. [`slides/presentation.pdf`](slides/presentation.pdf) is a static backup.
+
+| Key | Action |
+| --- | --- |
+| Arrow keys | Play the game |
+| D / A (or Page Down / Page Up) | Next / previous slide |
+| B | Enlarge the game panel (slide content narrows to make room) |
+| P | Open a full-screen board in a second window (for a laptop screen with an extended display) |
+| G | Switch the villain between demo strength (80%) and full force (100%) |
+| R / Shift+R | New game / reset the scoreboard |
+| F | Full screen |
+| H | Hide / show the game panel |
+| ? | Show the key list |
+| 1–5 | Jump to a slide |
+
+Every number on the slides is read from the result CSVs at build time. Rebuild after re-running experiments:
+
+```bash
+python3 -m slides.build --team "Name 1, Name 2, Name 3, Name 4"
+```
 
 ## Paper and Presentation
 

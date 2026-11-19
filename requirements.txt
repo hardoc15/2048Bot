@@ -1,6 +1,7 @@
-# The game engine and agents use only the Python standard library.
-# These packages are needed only for the results notebook (experiments/results.ipynb).
-matplotlib>=3.7
+# The game engine, Greedy agent, and spawners use only the Python standard library.
+# The TD bot (td/) needs numpy and numba. The results notebook and slide builder need the rest.
 numpy>=1.24
+numba>=0.59
+matplotlib>=3.7
 pandas>=2.0
 jupyter
