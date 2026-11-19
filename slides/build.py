@@ -282,6 +282,8 @@ def agents_numbers() -> dict:
 
     return {
         "SVG_SLOPE": slope_svg(),
+        "BEST_NORMAL_SHORT": short[best_n],
+        "BEST_NORMAL_VILLAIN": fmt(table[best_n]["villain"]),
         "RANK_NORMAL": ranking("random"),
         "RANK_VILLAIN": ranking("villain"),
         "SAMPLE_BANNER": '<div class="sample-banner">SAMPLE DATA: final numbers pending</div>' if sample else "",
