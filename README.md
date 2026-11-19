@@ -4,7 +4,7 @@ An empirical study of how different AI decision-making strategies perform in the
 
 Built as a final project for **COMP 560: Artificial Intelligence**.
 
-> **Status:** The four-agent comparison is in progress. The minimax notebook contains the results of the depth and weight experiments.
+> **Status:** All five agents (Random, Greedy, Minimax, Expectimax, and our trained bot Tuplet) are implemented and evaluated against all three tile spawners. All tables and figures are in [`experiments/results.ipynb`](experiments/results.ipynb). The paper is in progress.
 
 ---
 
@@ -92,7 +92,31 @@ Minimax and Expectimax are first compared at the same search depth. Depth is the
 
 ## Results
 
-*Preliminary: only the Greedy agent is done so far.* Full comparison tables will be added once all four agents are finished.
+### All five agents vs. every tile spawner
+
+Normal game and villain: seeds 0-99 (100 games each). Helper: seeds 0-19 with a 5,000-move cap (8 of Expectimax's 20 helper games hit the cap, so its helper average is a lower bound). Minimax and Expectimax search 2 moves ahead.
+
+| Agent | Normal game: avg score | Reached 2048 | Vs. villain: avg score | Moves survived vs. villain | With helper: avg score |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Random | 1,085 | 0% | 344 | 46 | 2,993 |
+| Greedy | 11,930 | 12% | 356 | 45 | 33,484 |
+| Minimax | 17,867 | 34% | **1,217** | **99** | 173,176 |
+| Expectimax | 32,290 | 74% | 791 | 73 | 189,876 |
+| Tuplet (trained) | **40,585** | **83%** | 686 | 68 | 103,115 |
+
+- **Normal game:** Tuplet > Expectimax > Minimax > Greedy > Random. Expectimax, which assumes random tiles, is the best search agent when tiles really are random.
+- **Against the villain the ranking flips:** Minimax, which plans for hostile tiles, survives longest. Every non-random agent loses 93% or more of its normal-game score.
+- **Sample size:** against the villain and helper, games are deterministic for every agent except Random, so the 100 villain games contain only 9-17 distinct outcomes per agent (see the notebook's "Distinct games" column).
+
+Reproduce (about 40 minutes on 8 cores for the normal and villain runs; the helper run is slower per game):
+
+```bash
+python3 -m experiments.all_agents --games 100 --spawners random villain --csv experiments/results/all_agents_main.csv
+python3 -m experiments.all_agents --games 20 --spawners helper --chunk 2 --max-moves 5000 --csv experiments/results/all_agents_helper.csv
+# then combine the two files into experiments/results/all_agents.csv (the notebook reads that file)
+```
+
+### Greedy agent
 
 **Greedy, 100 games (seeds 0–99):**
 
@@ -144,9 +168,9 @@ python3 -m spawners --spawner villain
 python3 -m spawners --spawner helper
 ```
 
-### TD bot: learning to play, and the villain
+### Tuplet: our trained bot, and the villain
 
-The TD bot ([`td/`](td/)) learns 2048 from self-play with temporal-difference learning on an n-tuple network (method from Szubert & Jaskowski, 2014, implemented from scratch). The network is 5 four-cell patterns (two rows, three 2×2 squares), each shared across the board's 8 rotations/reflections. It trains only on normal random tiles. A fast 64-bit board compiled with Numba (checked move-for-move against the shared engine) trains 1,000,000 games in about 23 minutes on a laptop.
+**Tuplet** (the TD-learning bot in [`td/`](td/), named after the n-tuple network it is built on) learns 2048 from self-play with temporal-difference learning on an n-tuple network (method from Szubert & Jaskowski, 2014, implemented from scratch). The network is 5 four-cell patterns (two rows, three 2×2 squares), each shared across the board's 8 rotations/reflections. It trains only on normal random tiles. A fast 64-bit board compiled with Numba (checked move-for-move against the shared engine) trains 1,000,000 games in about 23 minutes on a laptop.
 
 Each saved checkpoint plays the same 100 seeded games, with random tiles and against the full-force villain (depth 2):
 
@@ -172,11 +196,27 @@ python3 -m experiments.td_learning_curve            # every checkpoint vs. rando
 
 ### Results notebook and figures
 
-[`experiments/results.ipynb`](experiments/results.ipynb) runs the Greedy agent on 100 seeded games and produces its tables and figures for the slides and paper (saved to `experiments/figures/`): a summary table, tile-reach curve, score distribution, highest-tile distribution, heuristic ablation, weight-sensitivity heatmap, and a single-game demo, plus the spawner results (scores by spawner, tile reach by spawner, and the same start played out against the villain, random, and helper).
+[`experiments/results.ipynb`](experiments/results.ipynb) collects every result in the project and saves its figures to `experiments/figures/` for the slides and paper:
+
+| Figure | Shows |
+| --- | --- |
+| `fig1_agents_normal` | Average score and 2048 rate for all five agents, normal game |
+| `fig2_agents_tile_reach` | Share of games reaching each tile, per agent |
+| `fig3_agents_cost` | Score vs. computation time per move |
+| `fig4_agents_vs_spawners` | Every agent against the villain, normal game, and helper |
+| `fig5_villain_survival` | Moves survived against the full-force villain |
+| `fig6_greedy_ablation` | Greedy with one heuristic feature removed at a time |
+| `fig7_greedy_weight_sensitivity` | Greedy score across heuristic weights |
+| `fig8_spawner_depth` | Spawner search depth: sabotage is easy, help takes planning |
+| `fig9_spawner_final_boards` | The same start played against the villain, random tiles, and the helper |
+| `fig10_td_training_curve` | Tuplet learning to reach 2048 and 4096 |
+| `fig11_td_vs_villain_curve` | Tuplet's learning curve in the normal game vs. against the villain |
+
+The Minimax branch's own depth and weight study is in [`experiments/minimax.ipynb`](experiments/minimax.ipynb), and the original Random baseline analysis is in [`experiments/results/random_baseline.ipynb`](experiments/results/random_baseline.ipynb).
 
 ```bash
 pip install -r requirements.txt
-jupyter notebook experiments/results.ipynb   # then Kernel → Restart & Run All
+jupyter notebook experiments/results.ipynb   # then Kernel, Restart & Run All
 ```
 
 ## Repository Structure
@@ -184,7 +224,7 @@ jupyter notebook experiments/results.ipynb   # then Kernel → Restart & Run All
 ```text
 2048Bot/
 ├── README.md
-├── requirements.txt      # numpy + numba (TD bot); matplotlib, pandas, jupyter (notebook, slides)
+├── requirements.txt      # numpy + numba (Tuplet); matplotlib, pandas, jupyter (notebook, slides)
 ├── game/                 # 2048 engine (on main)
 │   ├── board.py          #   Pure board functions: moves, merges, spawns, game over
 │   ├── game.py           #   Game class: board + score + seeded random spawns
@@ -209,7 +249,7 @@ jupyter notebook experiments/results.ipynb   # then Kernel → Restart & Run All
 │   ├── src/              #   Slide template + browser game/villain (game.js)
 │   ├── build.py          #   Builds the self-contained presentation from results
 │   └── presentation.html #   Open in any browser; no internet needed
-├── tests/                # Unit tests for the engine, agents, spawners, TD bot, and browser game
+├── tests/                # Unit tests for the engine, agents, spawners, Tuplet, and browser game
 ├── experiments/
 │   ├── evaluate.py       # Run N seeded games for an agent and report metrics
 │   ├── spawner_experiment.py  # Greedy vs. villain / random / helper
@@ -329,7 +369,7 @@ Commands for reproducing the experiments, including the seeds and search depths 
 
 ## Presentation
 
-[`slides/presentation.html`](slides/presentation.html) is a single self-contained file: open it in any browser, with no internet needed. A live game against the villain (placing 80% of tiles; the rest are random) runs in the corner of every slide so someone can play while we present. [`slides/presentation.pdf`](slides/presentation.pdf) is a static backup.
+[`slides/presentation.html`](slides/presentation.html) is a single self-contained file: open it in any browser, with no internet needed. A live game against the full-force villain runs in the corner of every slide so someone can play while we present. [`slides/presentation.pdf`](slides/presentation.pdf) is a static backup.
 
 | Key | Action |
 | --- | --- |
@@ -337,7 +377,7 @@ Commands for reproducing the experiments, including the seeds and search depths 
 | D / A (or Page Down / Page Up) | Next / previous slide |
 | B | Enlarge the game panel (slide content narrows to make room) |
 | P | Open a full-screen board in a second window (for a laptop screen with an extended display) |
-| G | Switch the villain between demo strength (80%) and full force (100%) |
+| G | Switch between the demo strength set with `--gentle` (default 1.0, full force) and full force |
 | R / Shift+R | New game / reset the scoreboard |
 | F | Full screen |
 | H | Hide / show the game panel |
