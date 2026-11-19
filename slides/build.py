@@ -48,7 +48,7 @@ def most_common(series) -> str:
     return fmt(series.mode().max())
 
 
-def line_svg(points, color, baseline=None, width=500, height=330) -> str:
+def line_svg(points, color, baseline=None, width=500, height=400) -> str:
     """Small log-x line chart (training games vs. average score) styled for the deck."""
     import math
     left, right, top, bottom = 62, 18, 22, 40
@@ -107,7 +107,7 @@ def td_numbers() -> dict:
     path = os.path.join(RESULTS, "td_learning_curve.csv")
     if not os.path.exists(path) or not os.path.exists(TD_LOG):
         missing = "(pending)"
-        return {k: missing for k in ["TD_GAMES_SHORT", "TD_NORMAL_GAIN", "TD_VILLAIN_GAIN", "TD_NORMAL_FROM", "TD_NORMAL_TO", "TD_VILLAIN_FROM", "TD_VILLAIN_TO", "SVG_NORMAL", "SVG_VILLAIN", "TD_TAKEAWAY_SHORT", "TD_DISTINCT", "TD_GAMES", "TD_RANDOM", "TD_RANDOM_2048", "TD_RANDOM_TILE", "TD_VILLAIN",
+        return {k: missing for k in ["TD_VILLAIN_2048", "TD_GAMES_SHORT", "TD_NORMAL_GAIN", "TD_VILLAIN_GAIN", "TD_NORMAL_FROM", "TD_NORMAL_TO", "TD_VILLAIN_FROM", "TD_VILLAIN_TO", "SVG_NORMAL", "SVG_VILLAIN", "TD_TAKEAWAY_SHORT", "TD_DISTINCT", "TD_GAMES", "TD_RANDOM", "TD_RANDOM_2048", "TD_RANDOM_TILE", "TD_VILLAIN",
                                      "TD_VILLAIN_TILE", "TD_TRAIN_MIN", "TD_VILLAIN_SENTENCE", "TD_TAKEAWAY"]}
     df = pd.read_csv(path)
     log = pd.read_csv(TD_LOG)
@@ -141,6 +141,7 @@ def td_numbers() -> dict:
         "TD_VILLAIN_FROM": fmt(early_villain), "TD_VILLAIN_TO": fmt(villain.score.mean()),
         "TD_RANDOM": fmt(normal.score.mean()),
         "TD_RANDOM_2048": fmt((normal.max_tile >= 2048).mean() * 100),
+        "TD_VILLAIN_2048": fmt((villain.max_tile >= 2048).mean() * 100),
         "TD_RANDOM_TILE": most_common(normal.max_tile),
         "TD_VILLAIN": fmt(villain.score.mean()),
         "TD_VILLAIN_TILE": most_common(villain.max_tile),
