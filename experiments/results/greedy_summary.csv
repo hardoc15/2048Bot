@@ -1,0 +1,12 @@
+,Greedy
+Games,100.0
+Average score,11929.72
+Median score,11812.0
+Best score,31976.0
+Worst score,736.0
+Reached 512 (%),92.0
+Reached 1024 (%),53.0
+Reached 2048 (%),12.0
+Average moves per game,714.19
+Average time per move (ms),0.0786323
+Total agent time (s),5.594387

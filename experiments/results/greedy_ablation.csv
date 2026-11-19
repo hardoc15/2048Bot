@@ -1,0 +1,6 @@
+variant,avg_score,reached_1024_pct,reached_2048_pct
+Full heuristic,11929.72,53.0,12.0
+No empty cells,10513.12,48.0,9.0
+No monotonicity,4003.04,4.0,0.0
+No smoothness,4532.4,1.0,0.0
+No corner,11547.64,54.0,7.000000000000001
