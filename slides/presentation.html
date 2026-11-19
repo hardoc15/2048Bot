@@ -64,7 +64,9 @@
   .card h3 { margin: 0 0 8px; font-size: 27px; font-weight: 900; display: flex; align-items: center; gap: 12px; }
   .card p { margin: 0; font-size: 21px; line-height: 1.4; }
   .card .t { width: 46px; height: 46px; font-size: 20px; border-radius: 9px; }
-  .card.villain { border-color: #efc2b8; border-top: 6px solid var(--red); } .card.helper { border-color: #c4d8f2; border-top: 6px solid var(--blue); }
+  .card.villain { border-color: #efc2b8; border-top: 6px solid var(--red); }
+  .card.random { border-color: #e3d3bd; border-top: 6px solid #8a5a3c; }
+  .card.helper { border-color: #f0d9ad; border-top: 6px solid var(--gold); }
   .chips { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 14px; }
   .chip { background: var(--bg-2); border: 1px solid var(--rule); border-radius: 99px; padding: 10px 18px; font-size: 21px; color: var(--ink-2); }
   .chip b { color: var(--ink); }
@@ -214,7 +216,7 @@
   <!-- 1: title -->
   <section class="slide">
     <div class="content">
-      <div class="kicker">COMP 560 Final Project, Team names TBD</div>
+      <div class="kicker">COMP 560 Final Project, Dev, Harrison, Maruthi, Tarun</div>
       <h1>Who's the Real Opponent in</h1>
       <div class="title-tiles"><span class="t t2">2</span><span class="t t32">0</span><span class="t t256">4</span><span class="t t2048">8</span></div>
       <p style="font-size:30px; margin:0">Search and learning agents vs. an AI that decides where the tiles go</p>
@@ -234,8 +236,8 @@
       <div class="row" style="margin-top:18px">
         <div class="card villain"><h3><span class="t" style="background:var(--red)">2</span><span class="red">Villain</span></h3>
           <p>Tries every cell and value, predicts your reply two moves ahead, places the <b>worst</b> one.</p></div>
-        <div class="card"><h3><span class="t t4">4</span>Random</h3><p>The normal game, exactly.</p></div>
-        <div class="card helper"><h3><span class="t" style="background:var(--blue)">2</span><span class="blue">Helper</span></h3>
+        <div class="card random"><h3><span class="t" style="background:#8a5a3c">4</span>Random</h3><p>The normal game, exactly.</p></div>
+        <div class="card helper"><h3><span class="t" style="background:var(--gold)">2</span><span class="gold">Helper</span></h3>
           <p>Same adversarial search, places the <b>best</b> tile instead.</p></div>
       </div>
       <div class="players">

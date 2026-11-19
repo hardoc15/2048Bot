@@ -2,7 +2,7 @@
 
 Usage:
     python3 -m slides.build
-    python3 -m slides.build --team "Name 1, Name 2, Name 3, Name 4" --gentle 1.0
+    python3 -m slides.build --team "Dev, Harrison, Maruthi, Tarun" --gentle 1.0
 
 Inlines the browser game (slides/src/game.js), the figures from
 experiments/figures/, and every number on the slides, read from the result
@@ -257,7 +257,7 @@ def agents_numbers() -> dict:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Build the self-contained presentation.")
-    parser.add_argument("--team", default="Team names TBD")
+    parser.add_argument("--team", default="Dev, Harrison, Maruthi, Tarun")
     parser.add_argument("--gentle", type=float, default=1.0, help="demo villain strength: share of tiles it places (0-1); 1.0 = full force")
     parser.add_argument("--out", default=os.path.join(HERE, "presentation.html"))
     args = parser.parse_args()
