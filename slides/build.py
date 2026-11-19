@@ -185,7 +185,7 @@ def agent_table():
     return SAMPLE, True
 
 
-def dumbbell_svg(table, width=1048, height=330) -> str:
+def dumbbell_svg(table, width=1048, height=362) -> str:
     """Log-scale dot plot: each agent's score against the villain, in the normal game, and (if run) with the helper."""
     left, right, top, bottom = 190, 24, 6, 34
     vals = [v[k] for v in table.values() for k in ("random", "villain", "helper") if k in v]
@@ -204,7 +204,7 @@ def dumbbell_svg(table, width=1048, height=330) -> str:
         d = table[a]
         keys = [k for k in ("villain", "random", "helper") if k in d]
         xs = [sx(d[k]) for k in keys]
-        parts.append(f'<text x="0" y="{y + 7:.1f}" fill="#4a3a2f" font-size="21" font-weight="600" '
+        parts.append(f'<text x="0" y="{y + 7:.1f}" fill="#4a3a2f" font-size="23" font-weight="600" '
                      f'text-anchor="start">{AGENT_NAME[a]}</text>')
         parts.append(f'<line x1="{min(xs):.1f}" x2="{max(xs):.1f}" y1="{y:.1f}" y2="{y:.1f}" stroke="#e7d8c3" '
                      f'stroke-width="11" stroke-linecap="round"/>')
