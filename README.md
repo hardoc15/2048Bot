@@ -22,6 +22,7 @@ Built as a final project for **COMP 560: Artificial Intelligence**.
 | **Greedy** | Scores the board after each legal move and takes the best immediate result. | Heuristic evaluation |
 | **Minimax** | Searches ahead and treats each tile spawn as a worst-case adversarial choice. | Adversarial search |
 | **Expectimax** | Searches ahead and weights each tile spawn by its actual probability. | Probabilistic reasoning / decision theory |
+| **Tuplet** (trained) | Learns its own board evaluation from 1,000,000 games of self-play, then picks the best move by it. | Reinforcement learning (TD learning) |
 
 To keep the comparison fair, the Greedy, Minimax, and Expectimax agents share the same board evaluation function wherever possible.
 
@@ -225,7 +226,7 @@ jupyter notebook experiments/results.ipynb   # then Kernel, Restart & Run All
 2048Bot/
 ├── README.md
 ├── requirements.txt      # numpy + numba (Tuplet); matplotlib, pandas, jupyter (notebook, slides)
-├── game/                 # 2048 engine (on main)
+├── game/                 # 2048 engine
 │   ├── board.py          #   Pure board functions: moves, merges, spawns, game over
 │   ├── game.py           #   Game class: board + score + seeded random spawns
 │   ├── runner.py         #   play_game / play_games: run an agent and record results
@@ -233,7 +234,10 @@ jupyter notebook experiments/results.ipynb   # then Kernel, Restart & Run All
 ├── agents/
 │   ├── base.py           # Agent interface every algorithm implements
 │   ├── heuristic.py      # Shared board evaluation (Greedy, Minimax, Expectimax)
-│   └── greedy.py         # Greedy agent
+│   ├── random_agent.py   # Random agent
+│   ├── greedy.py         # Greedy agent
+│   ├── minimax.py        # Minimax agent (alpha-beta pruning)
+│   └── expectimax.py     # Expectimax agent
 ├── spawners/             # Who places the tiles: random, villain, or helper
 │   ├── base.py           #   Spawner interface + RandomSpawner (the normal game)
 │   ├── adversarial.py    #   VillainSpawner / HelperSpawner (adversarial search)
@@ -246,24 +250,26 @@ jupyter notebook experiments/results.ipynb   # then Kernel, Restart & Run All
 │   ├── agent.py          #   TDAgent: plays from a saved checkpoint
 │   └── checkpoints/      #   Saved networks + training log
 ├── slides/
-│   ├── src/              #   Slide template + browser game/villain (game.js)
+│   ├── src/              #   Slide template, browser game/villain (game.js), embedded font
 │   ├── build.py          #   Builds the self-contained presentation from results
-│   └── presentation.html #   Open in any browser; no internet needed
+│   ├── presentation.html #   Open in any browser; no internet needed
+│   └── presentation.pdf  #   Static backup of the slides
 ├── tests/                # Unit tests for the engine, agents, spawners, Tuplet, and browser game
 ├── experiments/
 │   ├── evaluate.py       # Run N seeded games for an agent and report metrics
+│   ├── all_agents.py     # Every agent vs. every tile spawner (parallel)
 │   ├── spawner_experiment.py  # Greedy vs. villain / random / helper
 │   ├── td_learning_curve.py   # TD checkpoints vs. random tiles and the villain
 │   ├── results.ipynb     # All tables and figures
+│   ├── minimax.ipynb     # Minimax depth and weight study
 │   ├── figures/          # PNGs for slides and paper
 │   └── results/          # Per-game CSV output
-├── slides/               # (planned) Presentation slides and demo
 └── paper/                # (planned) LaTeX source and compiled PDF
 ```
 
 ### Branches
 
-`main` holds the shared 2048 engine. Each agent is developed on its own branch (one per algorithm: Random, Greedy, Minimax, Expectimax) and merged back for the final experiments.
+Each agent was developed on its own branch (`random-agent`, `greedy`, `minimax`, `expectimax`, `td-bot`). All of them are now merged into `main`, which holds the complete project.
 
 ## Getting Started
 
@@ -365,11 +371,17 @@ for result in play_games(ExpectimaxAgent(depth=2), seeds=[0, 1, 2]):
           result.moves, result.time_per_move)
 ```
 
-Commands for reproducing the experiments, including the seeds and search depths used, will be added once the agents are complete.
-
 ## Presentation
 
-[`slides/presentation.html`](slides/presentation.html) is a single self-contained file: open it in any browser, with no internet needed. A live game against the full-force villain runs in the corner of every slide so someone can play while we present. [`slides/presentation.pdf`](slides/presentation.pdf) is a static backup.
+[`slides/presentation.html`](slides/presentation.html) is a single self-contained file: open it in any browser, with no internet needed. A live game against the full-force villain runs in the corner of every slide so someone from the audience can play while we present. [`slides/presentation.pdf`](slides/presentation.pdf) is a static backup.
+
+Five slides, about a minute each:
+
+1. **Title:** invites someone to play the villain in the corner.
+2. **The setup:** the villain, random and helper tile spawners, and the five agents.
+3. **Result 1:** every agent's average score against the villain, in the normal game, and with the helper.
+4. **Result 2:** Tuplet's learning curves, in the normal game and against the villain.
+5. **Live and takeaways:** the player's live results next to every agent's, plus three takeaways.
 
 | Key | Action |
 | --- | --- |
@@ -387,7 +399,7 @@ Commands for reproducing the experiments, including the seeds and search depths 
 Every number on the slides is read from the result CSVs at build time. Rebuild after re-running experiments:
 
 ```bash
-python3 -m slides.build --team "Name 1, Name 2, Name 3, Name 4"
+python3 -m slides.build   # team names default to "Dev, Harrison, Maruthi, Tarun"
 ```
 
 ## Paper and Presentation
@@ -399,13 +411,15 @@ python3 -m slides.build --team "Name 1, Name 2, Name 3, Name 4"
 
 | Member | Primary responsibility |
 | --- | --- |
-| *TBD* | 2048 game engine and Random agent |
-| *TBD* | Greedy agent and heuristic evaluation |
-| *TBD* | Minimax agent |
-| *TBD* | Expectimax agent |
+| Dev | Random agent and baseline analysis |
+| Harrison | Game engine, Greedy agent and shared heuristic, villain and helper spawners, Tuplet (trained bot), results notebook, and presentation |
+| Maruthi | Minimax agent and depth study |
+| Tarun | Expectimax agent |
 
 All members contribute to evaluation, code review, the paper, and the presentation.
 
 ## Acknowledgments
 
-External code, libraries, and references used in this project will be credited here.
+- **Tuplet's learning method:** M. Szubert and W. Jaskowski, "Temporal Difference Learning of N-Tuple Networks for the Game 2048," *IEEE Conference on Computational Intelligence and Games*, 2014. Our implementation is written from scratch.
+- **Font:** the slides embed [Nunito](https://github.com/googlefonts/nunito) (SIL Open Font License 1.1; license in `slides/src/fonts/OFL.txt`).
+- **Libraries:** NumPy, Numba, pandas, Matplotlib, and Jupyter.
