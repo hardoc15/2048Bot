@@ -48,7 +48,7 @@ def most_common(series) -> str:
     return fmt(series.mode().max())
 
 
-def line_svg(points, color, baseline=None, width=500, height=400) -> str:
+def line_svg(points, color, baseline=None, width=500, height=355) -> str:
     """Small log-x line chart (training games vs. average score) styled for the deck."""
     import math
     left, right, top, bottom = 62, 18, 22, 40
