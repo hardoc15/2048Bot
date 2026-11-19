@@ -131,7 +131,8 @@ def td_numbers() -> dict:
     return {
         "SVG_NORMAL": line_svg(pts("random"), "#8a5a3c", baseline=curve["random"].get(0)),
         "SVG_VILLAIN": line_svg(pts("villain"), "#d63a3a", baseline=curve["villain"].get(0)),
-        "TD_TAKEAWAY_SHORT": f"Training made Tuplet <b>{normal_gain:.0f}x</b> better, but not against the villain.",
+        "TD_TAKEAWAY_SHORT": (f"Tuplet reaches 2048 in <b>{fmt((normal.max_tile >= 2048).mean() * 100)}%</b> of normal games, "
+                              f"<b>{fmt((villain.max_tile >= 2048).mean() * 100)}%</b> against the villain."),
         "TD_DISTINCT": f"{distinct.min()} to {distinct.max()}",
         "TD_GAMES": fmt(final),
         "TD_GAMES_SHORT": f"{final / 1e6:g}M" if final >= 1e6 else f"{final / 1e3:g}k",
