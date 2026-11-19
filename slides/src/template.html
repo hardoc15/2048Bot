@@ -181,6 +181,10 @@
     display: inline-flex; align-items: center; gap: 10px; border: 1px solid #e3d3bd; box-shadow: 0 4px 0 rgba(36,28,22,0.05); }
   .setup-slide .big-chips .chip i { width: 13px; height: 13px; border-radius: 50%; display: inline-block; flex: none; }
   .setup-slide .big-chips .chip b { margin-right: 2px; }
+  .facts.plain.td-facts { margin-top: 18px; }
+  .facts.plain.td-facts .num { font-size: 40px; }
+  .facts.plain.td-facts .lab { font-size: 19px; }
+  .facts.plain.td-facts + .method { margin-top: 18px; }
   /* live table */
   .table-card { width: 1080px; background: var(--bg-2); border: 1px solid #e3d3bd; border-radius: 16px; overflow: hidden;
     box-shadow: 0 6px 0 rgba(36,28,22,0.06); margin-top: 2px; }
@@ -345,13 +349,13 @@
         <div class="chart"><h4>Normal game <span class="chip-mini">avg score vs. games trained</span></h4>{{SVG_NORMAL}}</div>
         <div class="chart"><h4 class="red">Against the villain <span class="chip-mini red-mini">same checkpoints, same games</span></h4>{{SVG_VILLAIN}}</div>
       </div>
-      <div class="metrics">
-        <div class="metric"><div class="m-num" style="background:var(--gold); color:#2b1a07">{{TD_RANDOM_2048}}%</div>
-          <div class="m-lab"><b>reach the 2048 tile</b><span>Greedy reaches it in only {{GREEDY_2048}}%</span></div></div>
-        <div class="metric"><div class="m-num" style="background:#8a5a3c">{{TD_NORMAL_TO}}</div>
-          <div class="m-lab"><b>score after training</b><span>up from {{TD_NORMAL_FROM}} early on</span></div></div>
-        <div class="metric"><div class="m-num" style="background:var(--red)">{{TD_VILLAIN_TO}}</div>
-          <div class="m-lab"><b>score vs. the villain</b><span>{{TD_VILLAIN_FROM}} early on, no steady rise</span></div></div>
+      <div class="facts plain td-facts">
+        <div class="fact" style="border-top-color:var(--gold)"><div class="num">{{TD_RANDOM_2048}}%</div>
+          <div class="lab">of Tuplet's games reach the 2048 tile (Greedy: {{GREEDY_2048}}%)</div></div>
+        <div class="fact" style="border-top-color:#8a5a3c"><div class="num">{{TD_NORMAL_TO}} <small>points</small></div>
+          <div class="lab">Tuplet's average score after training, up from {{TD_NORMAL_FROM}} early on</div></div>
+        <div class="fact" style="border-top-color:var(--red)"><div class="num red">{{TD_VILLAIN_TO}} <small>points</small></div>
+          <div class="lab">Tuplet's average against the villain, barely up from {{TD_VILLAIN_FROM}}</div></div>
       </div>
       <p class="method">{{TD_GAMES}} games played in {{TD_TRAIN_MIN}} minutes on a laptop. TD learning of an n-tuple network (Szubert &amp; Jaskowski, 2014).</p>
     </div>
