@@ -162,8 +162,9 @@
   .setup-slide .group-label { font-size: 17px; }
   .setup-slide .chip { font-size: 21px; padding: 10px 17px; }
   .setup-slide .group { flex: 1.3; }
-  .setup-slide .trained { display: flex; flex-direction: column; justify-content: center; }
-  .setup-slide .trained-name { margin: 0 0 14px; }
+  .setup-slide .trained { display: flex; flex-direction: column; justify-content: center; gap: 10px; padding: 22px 30px; }
+  .setup-slide .trained .group-label { margin: 0; }
+  .setup-slide .trained-name { margin: 0; line-height: 1; }
   .setup-slide .trained p { font-size: 26px; white-space: nowrap; }
   .setup-slide .group .chips { margin-top: 12px; }
   /* live table */
@@ -294,6 +295,7 @@
           </div>
         </div>
         <div class="trained">
+          <div class="group-label">Trained by us</div>
           <div class="trained-name"><b>Tuplet</b></div>
           <p>Played <b>1,000,000</b> games of 2048</p>
         </div>
