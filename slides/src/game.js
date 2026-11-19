@@ -171,16 +171,8 @@
     return [i, rand() < 0.9 ? 2 : 4];
   }
 
-  // Gentle villain: plays the worst tile with probability `strength`, otherwise a normal random tile.
-  function makeVillain(depth, strength, rand) {
-    const search = makeSearch(false, depth);
-    return function (board) {
-      return rand() < strength ? search(board) : randomSpawn(board, rand);
-    };
-  }
-
   const api = { UP, DOWN, LEFT, RIGHT, GAME_OVER, slideRowLeft, move, traceMove, legalMoves, emptyCells,
-                maxTile, evaluate, makeSearch, makeVillain, randomSpawn };
+                maxTile, evaluate, makeSearch, randomSpawn };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   else root.Game2048 = api;
 })(this);

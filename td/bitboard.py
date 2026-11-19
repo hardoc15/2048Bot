@@ -18,7 +18,7 @@ from __future__ import annotations
 import numpy as np
 from numba import njit
 
-from game.board import ALL_DIRECTIONS, Board, Direction
+from game.board import ALL_DIRECTIONS, Board
 
 UP, DOWN, LEFT, RIGHT = 0, 1, 2, 3
 DIRECTION_FROM_INDEX = {i: d for i, d in enumerate(ALL_DIRECTIONS)}

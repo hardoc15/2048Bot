@@ -389,7 +389,6 @@ Five slides, about a minute each:
 | D / A (or Page Down / Page Up) | Next / previous slide |
 | B | Enlarge the game panel (slide content narrows to make room) |
 | P | Open a full-screen board in a second window (for a laptop screen with an extended display) |
-| G | Switch between the demo strength set with `--gentle` (default 1.0, full force) and full force |
 | R / Shift+R | New game / reset the scoreboard |
 | F | Full screen |
 | H | Hide / show the game panel |
